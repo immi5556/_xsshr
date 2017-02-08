@@ -1,0 +1,525 @@
+<html>
+<head>
+    <script type="text/javascript" src="jquery-3.0.0.min.js"></script>
+    <link href="datedrop\datedropper.css" rel="stylesheet" type="text/css" />
+    <script src="datedrop\datedropper.js"></script>
+    <!-- <meta name="viewport" content="width=640" / >-->
+    <style type="text/css">
+        
+        @media (min-width:320px) { /* smartphones, iPhone, portrait 480x320 phones */
+
+        }
+
+        @media (min-width:481px) { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+        }
+
+        @media (min-width:641px) { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+        }
+
+        @media (min-width:961px) { /* tablet, landscape iPad, lo-res laptops ands desktops */
+        }
+
+        @media (min-width:1025px) { /* big landscape tablets, laptops, and desktops */
+        }
+
+        @media (min-width:1281px) { /* hi-res laptops and desktops */
+        }
+
+        .modalDialog {
+            position: fixed;
+            font-family: Arial, Helvetica, sans-serif;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 99999;
+            opacity: 0;
+            -webkit-transition: opacity 400ms ease-in;
+            -moz-transition: opacity 400ms ease-in;
+            transition: opacity 400ms ease-in;
+            pointer-events: none;
+        }
+
+            .modalDialog:target {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .modalDialog > div {
+                width: 400px;
+                position: relative;
+                margin: 10% auto;
+                padding: 5px 20px 13px 20px;
+                border-radius: 10px;
+                background: #fff;
+                background: -moz-linear-gradient(#fff, #999);
+                background: -webkit-linear-gradient(#fff, #999);
+                background: -o-linear-gradient(#fff, #999);
+            }
+
+        .close {
+            background: #606061;
+            color: #FFFFFF;
+            line-height: 25px;
+            position: absolute;
+            right: -12px;
+            text-align: center;
+            top: -10px;
+            width: 24px;
+            text-decoration: none;
+            font-weight: bold;
+            -webkit-border-radius: 12px;
+            -moz-border-radius: 12px;
+            border-radius: 12px;
+            -moz-box-shadow: 1px 1px 3px #000;
+            -webkit-box-shadow: 1px 1px 3px #000;
+            box-shadow: 1px 1px 3px #000;
+        }
+
+            .close:hover {
+                background: #00d9ff;
+            }
+
+        .button {
+            font: bold 11px Arial;
+            text-decoration: none;
+            cursor: pointer;
+            background-color: #EEEEEE;
+            color: #333333;
+            padding: 2px 6px 2px 6px;
+            border-top: 1px solid #CCCCCC;
+            border-right: 1px solid #333333;
+            border-bottom: 1px solid #333333;
+            border-left: 1px solid #CCCCCC;
+        }
+
+        /*Bottom Half circle Menu*/
+        #menu-container {
+            position: absolute;
+            bottom: 0;
+            left: 43%;
+            z-index: 2010;
+            width: 200px;
+        }
+
+        div#FillMenu {
+            height: 90px;
+            width: 90px;
+            border-radius: 45px 45px 45px 45px;
+            margin-right: 10px;
+            float: left;
+            background-color: #0d1d38;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+        }
+
+        div#FindMenu {
+            margin-left: 10px;
+            height: 90px;
+            width: 90px;
+            border-radius: 45px 45px 45px 45px;
+            background-color: #0d1d38;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            float: left;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="menu-container">
+        <div id="FillMenu">
+            <h2>Donate</h2>
+            <h4 style="margin-top:-20px;">Click / Tap</h4>
+        </div>
+        <div id="FindMenu">
+            <h2>Find</h2>
+            <h4 style="margin-top:-20px;">Click / Tap</h4>
+        </div>
+    </div>
+    <div id="fillFood" style="background-color: black; text-align: center;padding-bottom:25px;display:none;position:absolute;left:0;top:0;z-index:1001;width:100%;opacity:0.8;color: white;">
+        <br />
+        <h1>DONATE FOOD</h1>
+        <input type="tel" placeholder="Mobile No" id="telno" name="" style="width: 80%;border-radius: 5px;height:35px;background-color: #0f3470;color: white;font-size: x-large;"> <br /><br />
+        <textarea id="food" rows="5" placeholder="Enter Food Details" style="width: 80%;border-radius: 5px;background-color: #0f3470;color: white;font-size: x-large;"></textarea> <br /><br />
+        <span style="font-size:x-large;color: white;">Available Till :</span>
+        <input id="tillfd" data-jump="1" data-format="d-m-Y" data-max-year="2017" data-min-year="2017" type="text" style="height:35px;background-color: #0f3470;color: white;font-size: large;" />
+        <span style="font-size:x-large;color: white;">Food Type: </span>
+        <select id="foodtype" style="height:35px;background-color: #0f3470;color: white;font-size: large;">
+            <option selected="selected" value="fresh">Cooked</option>
+            <option value="used">Raw</option>
+            <option value="used">Old</option>
+        </select>
+        <span style="font-size:x-large;color: white;">Food Style: </span>
+        <select id="foodstyle" style="height:35px;background-color: #0f3470;color: white;font-size: large;">
+            <option selected="selected" value="fresh">Veg</option>
+            <option value="used">NonVeg</option>
+            <option value="used">Kosher</option>
+            <option value="used">Halal</option>
+        </select>
+        <br /><br />
+        <textarea id="addr" rows="3" placeholder="Address" style="width: 80%;border-radius: 5px;background-color: #0f3470;color: white;font-size: x-large;"></textarea> <br /><br />
+        <a href="#openModal" id="btnsave" class="button" style="width:10px;">Confirm</a>
+        <a id="btnFillCancel" class="button" style="width:10px;height:35px;">Cancel</a>
+    </div>
+    <div id="findFood" style="background-color: black; text-align: center;padding-bottom:25px;display:none;position:absolute;left:0;top:0;z-index:1001;width:100%;opacity:0.8;color: white;">
+        <br />
+        <h2>FIND FOOD</h2>
+        <input type="tel" placeholder="Mobile No" id="fndtelno" name="" style="width: 80%;border-radius: 5px;height:45px;background-color: #0f3470;color: white;font-size: x-large;"> <br /><br />
+        <textarea id="fndfood" rows="5" placeholder="Enter Food Details" style="width: 80%;border-radius: 5px;background-color: #0f3470;color: white;font-size: x-large;"></textarea> <br /><br />
+        <span>Expected Till :</span>
+        <input id="fndtillfd" data-jump="1" data-format="d-m-Y" data-max-year="2017" data-min-year="2017" type="text" style="height:35px;background-color: #0f3470;color: white;font-size: large;" />
+        <span style="font-size:x-large;color: white;">Food Type: </span>
+        <select id="fndfoodtype" style="height:35px;background-color: #0f3470;color: white;font-size: large;">
+            <option selected="selected" value="fresh">Cooked</option>
+            <option value="used">Raw</option>
+            <option value="used">Old</option>
+        </select>
+        <span style="font-size:x-large;color: white;">Food Style: </span>
+        <select id="fndfoodstyle" style="height:35px;background-color: #0f3470;color: white;font-size: large;">
+            <option selected="selected" value="fresh">Veg</option>
+            <option value="used">NonVeg</option>
+            <option value="used">Kosher</option>
+            <option value="used">Halal</option>
+        </select>
+        <br /><br />
+        <textarea id="fndaddr" rows="3" placeholder="Address" style="width: 80%;border-radius: 5px;background-color: #0f3470;color: white;font-size: x-large;"></textarea> <br /><br />
+        <a href="#openModal" id="btnfndsave" class="button" style="width:10px;height:55px;">Confirm</a>
+        <a id="btnFndCancel" class="button" style="width:10px;height:35px;">Cancel</a>
+    </div>
+    <div style="height:100%;width:100%;overflow:hidden;" id="map"></div>
+    <div id="openModal" class="modalDialog">
+        <div>
+            <a href="#close" title="Close" class="close">X</a>
+            <h2 id="modhdr">Modal Box</h2>
+            <div id="modcont"></div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('#tillfd').dateDropper();
+        $("#fndtillfd").dateDropper();
+        $("#btnsave").on("click", function () {
+            $("#modcont").html("");
+            $("#modhdr").html("Alert");
+            if (!$("#telno").val()) {
+                $("#modcont").append("<p>Mobile # Required</p>");
+                return;
+            }
+            if (!$("#food").val()) {
+                $("#modcont").append("<p>Food Details Required</p>");
+                return;
+            }
+            if (!$("#addr").val()) {
+                $("#modcont").append("<p>Address  Required</p>");
+                return;
+            }
+            $("#modhdr").html("Sumary");
+            $("#modcont").append("<p>Your Mobile #  : " + $("#telno").val() + "</p>");
+            $("#modcont").append("<p>Your Food Info : " + $("#food").val() + "</p>");
+            $("#modcont").append("<p>Your Address   : " + $("#addr").val() + "</p>");
+            $("#modcont").append("<div style='text-align:center;'><p><a href='#close' id='btnFillPublish' class='button' style='width:10px;height:55px;'>Publish</a> </p></div>");
+            //alert($("#telno").val());
+            //alert($("#tillfd").val());
+        });
+        $(document).on("click", "#btnFillCancel", function () {
+            $("#fillFood").slideToggle();
+        });
+        $(document).on("click", "#btnFillPublish", function () {
+            $("#fillFood").slideToggle();
+            var food = {
+                telno: $("#telno").val(),
+                food: $("#food").val(),
+                addr: $("#addr").val(),
+                availabletill: $("#tillfd").val(),
+                foodtype: $("#foodtype").val(),
+                type: "fill",
+                pos: pos
+            }
+            var urladdr = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI($("#addr").val());
+            $.getJSON(urladdr, function (json) {
+                if (json.status === "OK") {
+                    console.log("JSON Data: " + JSON.stringify(json));
+                    food.pos = json.results[0].geometry.location;
+                }
+                service.postData("http://immanuel.co/xSfood/data.php", food, function (err, data) {
+                    if (err) {
+                        return;
+                    }
+                    food.id = data.id;
+                    addFoods(food);
+                });
+            });
+            $("#telno").val("");
+            $("#food").val("");
+            $("#addr").val("");
+            $("#addr").val(currentaddress)
+            //infowindow.close();
+        });
+
+        //fill
+        $(document).on("click", "#FillMenu", function () {
+            if ($("#findFood").is(":visible")) {
+                $("#findFood").slideToggle({
+                    complete: function () {
+                        $("#fillFood").slideToggle();
+                    }
+                });
+            }
+            else {
+                $("#fillFood").slideToggle();
+            }
+        });
+
+        //find
+        $(document).on("click", "#FindMenu", function () {
+            if ($("#fillFood").is(":visible")) {
+                $("#fillFood").slideToggle({
+                    complete: function () {
+                        $("#findFood").slideToggle();
+                    }
+                });
+            }
+            else {
+                $("#findFood").slideToggle();
+            }
+        });
+        $(document).on("click", "#btnFndCancel", function () {
+            $("#findFood").slideToggle();
+        });
+
+        $("#btnfndsave").on("click", function () {
+            $("#modcont").html("");
+            $("#modhdr").html("Alert");
+            if (!$("#fndtelno").val()) {
+                $("#modcont").append("<p>Mobile # Required</p>");
+                return;
+            }
+            if (!$("#fndfood").val()) {
+                $("#modcont").append("<p>Food Details Required</p>");
+                return;
+            }
+            if (!$("#fndaddr").val()) {
+                $("#modcont").append("<p>Address  Required</p>");
+                return;
+            }
+            $("#modhdr").html("Sumary");
+            $("#modcont").append("<p>Your Mobile #  : " + $("#fndtelno").val() + "</p>");
+            $("#modcont").append("<p>Your Food Info : " + $("#fndfood").val() + "</p>");
+            $("#modcont").append("<p>Your Address   : " + $("#fndaddr").val() + "</p>");
+            $("#modcont").append("<div style='text-align:center;'><p><a href='#close' id='btnFndPublish' class='button' style='width:10px;height:55px;'>Publish</a> </p></div>");
+        });
+
+        $(document).on("click", "#btnFndPublish", function () {
+            $("#findFood").slideToggle();
+            var food = {
+                telno: $("#fndtelno").val(),
+                food: $("#fndfood").val(),
+                addr: $("#fndaddr").val(),
+                availabletill: $("#fndtillfd").val(),
+                foodtype: $("#fndfoodtype").val(),
+                foodstyle: $("#fndfoodstyle").val(),
+                type: "find",
+                pos: pos
+            }
+            var urladdr = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURI($("#fndaddr").val());
+            $.getJSON(urladdr, function (json) {
+                if (json.status === "OK") {
+                    console.log("JSON Data: " + JSON.stringify(json));
+                    food.pos = json.results[0].geometry.location;
+                }
+                service.postData("http://immanuel.co/xSfood/data.php", food, function (err, data) {
+                    if (err) {
+                        return;
+                    }
+                    food.id = data.id;
+                    addFoods(food);
+                });
+            });
+            $("#fndtelno").val("");
+            $("#fndfood").val("");
+            $("#fndaddr").val("");
+            $("#fndaddr").val(currentaddress)
+            //infowindow.close();
+        });
+
+        var mycontentString = '<div id="content">' +
+		      '<div id="siteNotice">' +
+		      '<a href="javascript:void(0);" class="cls-Fill">Fill</a> || ' +
+		      '<a href="javascript:void(0);" class="cls-Find">Find</a>' +
+		      '</div>';
+
+        var map, you, pos, infowindow, foodmarkers = [];
+        var yelicon, grnicon;
+        var userip, currentaddress;
+        function getLocation() {
+            //alert(userip);
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, getLocFromIp);
+            } else {
+                getLocFromIp();
+            }
+        }
+        function getCurrentAddress() {
+            var tt = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + pos.lat + ',' + pos.lng + '&sensor=true';
+            $.getJSON(tt, function (json) {
+                console.log("JSON Data: " + JSON.stringify(json));
+                currentaddress = json.results[0].formatted_address;
+                $("#addr").val(currentaddress);
+                $("#fndaddr").val(currentaddress)
+            });
+        }
+        function getLocFromIp() {
+            $.getJSON('http://freegeoip.net/json/' + userip, function (data) {
+                console.log(JSON.stringify(data, null, 2));
+                showPosition({
+                    coords: {
+                        lat: data.latitude,
+                        lng: data.longitude
+                    }
+                });
+            });
+        }
+        function addFoods(data) {
+            var fd = new google.maps.Marker({
+                position: data.pos,
+                map: map,
+                title: '',
+                icon: data.type == "fill" ? grnicon : yelicon,
+                scaledSize: new google.maps.Size(50, 50)
+            });
+            foodmarkers.push(fd);
+        }
+
+        function getFillFoods() {
+            service.getData("http://immanuel.co/xSfood/data.php?type=fill", function (err, da) {
+                if (err) {
+                    alert("Error");
+                    return;
+                }
+                da = JSON.parse(da || {});
+                ((da.data) || []).forEach(function (item) {
+                    item.type = "fill";
+                    addFoods(item);
+                });
+            });
+        }
+
+        function getFindFoods() {
+            service.getData("http://immanuel.co/xSfood/data.php?type=find", function (err, da) {
+                if (err) {
+                    alert("Error");
+                    return;
+                }
+                da = JSON.parse(da || {});
+                ((da.data) || []).forEach(function (item) {
+                    item.type = "find";
+                    addFoods(item);
+                });
+            });
+        }
+
+        function showPosition(position) {
+            pos = {
+                lat: position.coords.latitude || 17.4812413,
+                lng: position.coords.longitude || 78.4970369
+            };
+            getCurrentAddress();
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: pos,
+                disableDefaultUI: true,
+                zoom: 10
+            });
+
+            var icon = {
+                url: 'red.png', // url
+                scaledSize: new google.maps.Size(75, 75), // scaled size
+                origin: new google.maps.Point(0, 0), // origin
+                anchor: new google.maps.Point(0, 0) // anchor
+            };
+
+            yelicon = {
+                url: 'yellow.png', // url
+                scaledSize: new google.maps.Size(75, 75), // scaled size
+                origin: new google.maps.Point(0, 0), // origin
+                anchor: new google.maps.Point(0, 0) // anchor
+            };
+
+            grnicon = {
+                url: 'green.png', // url
+                scaledSize: new google.maps.Size(75, 75), // scaled size
+                origin: new google.maps.Point(0, 0), // origin
+                anchor: new google.maps.Point(0, 0) // anchor
+            };
+
+            //you = new google.maps.Marker({
+            //    position: pos,
+            //    map: map,
+            //    title: 'Its Me',
+            //    icon: icon,
+            //    scaledSize: new google.maps.Size(50, 50)
+            //});
+
+            //infowindow = new google.maps.InfoWindow({
+            //    content: mycontentString
+            //});
+
+            //you.addListener('click', function () {
+            //    infowindow.open(map, you);
+            //});
+
+            getFillFoods();
+            getFindFoods();
+        }
+
+        var service = (function () {
+            var getData = function (url, callback) {
+                $.ajax({
+                    url: url,
+                    method: "GET",
+                    success: function (da) {
+                        if (callback) {
+                            callback(undefined, da);
+                        }
+                    },
+                    fail: function (err) {
+                        if (callback) {
+                            callback(da);
+                        }
+                    }
+                });
+            };
+            var postData = function (url, data, callback) {
+                $.ajax({
+                    url: url,
+                    method: "POST",
+                    data: JSON.stringify(data),
+                    success: function (da) {
+                        if (callback) {
+                            callback(undefined, da);
+                        }
+                    },
+                    fail: function (err) {
+                        if (callback) {
+                            callback(da);
+                        }
+                    }
+                });
+            }
+            return {
+                postData: postData,
+                getData: getData
+            }
+        })();
+    </script>
+    <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUVjFat_TZyas2tLCH7mR4r6LCaW9r5-E&callback=getLocation" async defer></script>
+</body>
+</html>
