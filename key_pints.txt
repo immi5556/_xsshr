@@ -1,0 +1,7 @@
+20/Feb/24
+- xsfood.org latest deployment sync with this repo, the existing code in the git was moved to the folder bkup_git_src_
+
+- google map stopped working
+
+- so cahinging the api key
+	- 

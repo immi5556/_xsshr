@@ -331,8 +331,7 @@
                                 <div class="availSection">
                                     <label>Food Type:</label>
                                     <select id="foodtype">
-                                        <option selected="selected" value="any">Any</option>
-                                        <option value="cooked">Cooked</option>
+                                        <option selected="selected" value="cooked">Cooked</option>
                                         <option value="raw">Raw</option>
                                     </select>
                                 </div>
@@ -341,8 +340,7 @@
                                 <div class="availSection">
                                     <label>Food Style:</label>
                                     <select id="foodstyle">
-                                        <option selected="selected" value="any">Any</option>
-                                        <option value="veg">Veg</option>
+                                        <option selected="selected" value="veg">Veg</option>
                                         <option value="nonveg">NonVeg</option>
                                         <option value="kosher">Kosher</option>
                                         <option value="halal">Halal</option>
@@ -438,8 +436,7 @@
                                 <div class="availSection">
                                     <label>Food Type:</label>
                                     <select id="fndfoodtype">
-                                        <option selected="selected" value="any">Any</option>
-                                        <option value="cooked">Cooked</option>
+                                        <option selected="selected" value="cooked">Cooked</option>
                                         <option value="raw">Raw</option>
                                     </select>
                                 </div>
@@ -448,8 +445,7 @@
                                 <div class="availSection">
                                     <label>Food Style:</label>
                                     <select id="fndfoodstyle">
-                                        <option selected="selected" value="any">Any</option>
-                                        <option value="veg">Veg</option>
+                                        <option selected="selected" value="veg">Veg</option>
                                         <option value="nonveg">NonVeg</option>
                                         <option value="kosher">Kosher</option>
                                         <option value="halal">Halal</option>
@@ -548,8 +544,8 @@
             $("#food").val("");
             $("#addr").val(currentaddress);
             $('#tillfd').val(todstr);
-            $("#foodstyle").val("any");
-            $("#foodtype").val("any");
+            $("#foodstyle").val("veg");
+            $("#foodtype").val("cooked");
             $("#fillpublish").hide();
             $("#fillcontent").show();
             if ($("#findFood").is(":visible")) {
@@ -567,8 +563,8 @@
             $("#fndfood").val("");
             $("#fndaddr").val(currentaddress)
             $("#fndtillfd").val(todstr);
-            $("#fndfoodstyle").val("any");
-            $("#fndfoodtype").val("any");
+            $("#fndfoodstyle").val("veg");
+            $("#fndfoodtype").val("cooked");
             $("#findpublish").hide();
             $("#findcontent").show();
             if ($("#fillFood").is(":visible")) {
@@ -741,17 +737,7 @@
         var map, you, pos, infowindow, foodmarkers = [], autocomplete;
         var yelicon, grnicon, yelicon_me, grnicon_me;
         var userip, currentaddress;
-		
         function getLocation() {
-		
-			$.getJSON('https://geoip.immanuel.co/myip', t => {
-				console.log(t);
-				userip = t;
-				getLocation1();
-			});
-        }
-		
-		function getLocation1() {	
             //alert(userip);
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, getLocFromIp);
@@ -765,7 +751,6 @@
                 }
             }, 5000);
         }
-		
         function getCurrentAddress() {
             var tt = 'https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyAUVjFat_TZyas2tLCH7mR4r6LCaW9r5-E&latlng=' + pos.lat + ',' + pos.lng + '&sensor=true';
             $.getJSON(tt, function (json) {
@@ -776,12 +761,12 @@
             });
         }
         function getLocFromIp() {
-            $.getJSON('https://geoip.immanuel.co/address/' + userip, function (data) {
-                console.log(JSON.stringify(data, null, 2));
+            $.getJSON('https://freegeoip.net/json/' + userip, function (data) {
+                //console.log(JSON.stringify(data, null, 2));
                 showPosition({
                     coords: {
-                        latitude: parseFloat(data.Network.latitude),
-                        longitude: parseFloat(data.Network.longitude)
+                        latitude: data.latitude,
+                        longitude: data.longitude
                     }
                 });
             });
@@ -790,9 +775,7 @@
             var chsicon = data.type == "fill" ? grnicon : yelicon;
             chsicon = (deviceid && (data.DeviceId || data.deviceid) == deviceid && chsicon == grnicon) ? grnicon_me : chsicon;
             chsicon = (deviceid && (data.DeviceId || data.deviceid) == deviceid && chsicon == yelicon) ? yelicon_me : chsicon;
-            var ttil = (data.FoodType || data.foodtype || '') + "," + (data.FoodStyle || data.foodstyle || '');
-            ttil = ttil == 'any,any' ? '' : ttil + ' - ';
-            var texttitle = ttil + (data.FoodInfo || data.food);
+            var texttitle = (data.FoodType || data.foodtype | '') + "," + (data.FoodStyle || data.foodstyle || '') + "-" + (data.FoodInfo || data.food);
             var fd = new google.maps.Marker({
                 position: data.pos,
                 map: map,
@@ -889,7 +872,7 @@
                 //  map.fitBounds(place.geometry.viewport);
                 //} else {
                 map.setCenter(place.geometry.location);
-                map.setZoom(14);  // Why 17? Because it looks good.
+                map.setZoom(10);  // Why 17? Because it looks good.
                 //}
                 $('#txtsrchloc').val("");
                 $("#txtsrchloc").animate({ width: 'toggle' });
@@ -905,7 +888,7 @@
             map = new google.maps.Map(document.getElementById('map'), {
                 center: pos,
                 disableDefaultUI: true,
-                zoom: 14
+                zoom: 10
             });
 
             var icon = {
@@ -1077,6 +1060,7 @@
             }
         }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDjfi5VZAlNFkUCTf_SBoS0jGEMrMGbv-A&libraries=places&sensor=false&callback=getLocation" async defer></script>
+    <script type="text/javascript" src="https://l2.io/ip.js?var=userip"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUVjFat_TZyas2tLCH7mR4r6LCaW9r5-E&libraries=places&sensor=false&callback=getLocation" async defer></script>
 </body>
 </html>

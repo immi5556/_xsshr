@@ -1,0 +1,105 @@
+*{
+	padding: 0;
+	margin: 0;
+}
+body {
+	color: #333;
+	font-size: 14px;
+	line-height: 20px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+div#FillMenu {
+/*    height: 90px;
+    width: 90px;
+    border-radius: 45px 45px 45px 45px;
+    margin-right: 10px;
+    float: left;
+    background-color: #0d1d38;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    text-align: center;
+    color: white;
+    cursor: pointer;*/
+}
+
+div#FindMenu {
+/*    margin-left: 10px;
+    height: 90px;
+    width: 90px;
+    border-radius: 45px 45px 45px 45px;
+    background-color: #0d1d38;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    float: left;
+    text-align: center;
+    color: white;
+    cursor: pointer;*/
+}
+
+.form-row {
+	clear: both;
+	padding: 10px 0 0;
+}
+
+.textAreaSec,.inputFld,.availSection input[type="text"],.availSection select {
+	width: 100%;
+	box-sizing: border-box;
+	padding: 10px 10px 0;
+	font-family: 'Open Sans', sans-serif;
+	font-size: 13px;
+	line-height: 20px;
+	color: #333;
+	outline: none;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	background: #f2f2f2;
+}
+.inputFld {
+	height: 34px;
+	line-height: 34px;
+	padding: 0 10px;
+}
+button.close {
+	opacity: 1;
+}
+.availSection label {
+	color: #333;
+	font-size: 14px;
+	line-height: 25px;
+}
+.availSection input[type="text"],.availSection select {
+	height: 34px;
+	line-height: 34px;
+	padding: 0 10px;
+}
+.form-rowTimeSec .row {
+	margin: 0 -5px;
+}
+.form-rowTimeSec .col-lg-4,.form-rowTimeSec .col-md-4 {
+	padding: 0 5px;
+}
+
+.cd-popup {
+  opacity: 0;
+  display: none;
+  transition: opacity 0.3s 0s, visibility 0s 0.3s;
+}
+ 
+.cd-popup.is-visible {
+  opacity: 1;
+  display: block;
+  transition: opacity 0.3s 0s, visibility 0s 0s;
+}
+ 
+.cd-popup-container {
+  transform: translateY(-40px);
+  transition-property: transform;
+  transition-duration: 0.3s;
+}
+ 
+.is-visible .cd-popup-container {
+  transform: translateY(0);
+}
